@@ -14,7 +14,7 @@ export class Operation {
 
 export class AddCommitOperation extends Operation {
     constructor() {
-        super("git commit -m '<message>'");
+        super("git commit");
     }
 
     apply(commits: Commit[]): Commit[] {

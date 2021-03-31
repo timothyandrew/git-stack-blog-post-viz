@@ -5,8 +5,8 @@ import {Group} from "@visx/group";
 import {LinearGradient} from "@visx/gradient";
 import {CommitGraphFooter} from "./CommitGraphFooter";
 import {OperationList} from "./OperationList";
-import {Commit} from "./model/Commit";
-import {Operation} from "./model/Operation";
+import {Commit} from "../model/Commit";
+import {Operation} from "../model/Operation";
 
 interface CommitGraphSvgProps {
   commits: Commit[];
