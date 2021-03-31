@@ -7,6 +7,7 @@ import {CommitGraphFooter} from "./CommitGraphFooter";
 import {OperationList} from "./OperationList";
 import {Commit} from "../model/Commit";
 import {Operation} from "../model/Operation";
+import {Marker, MarkerArrow} from "@visx/marker";
 
 interface CommitGraphSvgProps {
   commits: Commit[];
@@ -15,6 +16,7 @@ interface CommitGraphSvgProps {
 }
 
 const margin = {top: 30, left: 60, right: 60, bottom: 30};
+const radius = 23;
 
 export function CommitGraphSvg(props: CommitGraphSvgProps) {
   const [pageBounds, setPageBounds] = useState<[number, number]>([0, 0]);
@@ -28,7 +30,7 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
     }
   }, [svgRef]);
 
-  const dimensions = [pageBounds[0], props.widthGuide(pageBounds[1], props.commits)];
+  const dimensions: [number, number] = [pageBounds[0], props.widthGuide(pageBounds[1], props.commits)];
 
   const root = hierarchy(props.commits[0], (parent) => {
     return props.commits.filter((c) => c.parent === parent);
@@ -37,21 +39,27 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
   return (
     <svg width="100%" height="200" ref={svgRef}>
       <LinearGradient id="links-gradient" from="#fd9b93" to="#fe6e9e"/>
+      <MarkerArrow id="arrow" stroke="#333" fill="#333" size={8} strokeWidth={2} refX={34} />
       <Tree root={root} size={dimensions}>
         {tree => (
             <Group top={margin.top} left={margin.left}>
-              {tree.links().map((link, i) => (
+              {tree.links().map((link, i) => {
+                let source = link.source;
+                link.source = link.target;
+                link.target = source;
+
+                return (
                   <LinkHorizontalLine
+                      markerEnd="url(#arrow)"
                       key={i}
                       data={link}
                       stroke="#000"
                       strokeWidth="1"
-                      fill="none"
-                  />
-              ))}
+                      fill="none" />
+                  );
+              })}
 
               {tree.descendants().map((node, key) => {
-                const radius = 23;
 
                 let top = node.x;
                 let left = node.y;
