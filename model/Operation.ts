@@ -18,7 +18,15 @@ export class AddCommitOperation extends Operation {
     }
 
     apply(commits: Commit[]): Commit[] {
-        const parent = commits[commits.length - 1];
-        return [...commits, new Commit(parent)];
+      const parent = commits[commits.length - 1];
+      const commit = new Commit(parent);
+
+      parent.isHead = false;
+      parent.isBranchTip = false;
+
+      commit.isHead = true;
+      commit.isBranchTip = true;
+
+      return [...commits, commit];
     }
 }

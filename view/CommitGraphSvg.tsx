@@ -63,18 +63,36 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
                           fill={node.data.getBg()}
                           className="bg-yellow-500"
                           stroke={node.data.getBorder()}
-                          strokeWidth={1}
-                      />
+                          strokeWidth={1} />
                       <text
                           dy=".33em"
                           fontSize={10}
                           className="font-mono"
                           textAnchor="middle"
                           style={{pointerEvents: 'none'}}
-                          fill={node.data.getFg()}
-                      >
+                          fill={node.data.getFg()}>
                         {node.data.sha}
                       </text>
+
+                      { node.data.isHead && <text
+                          dy={-radius - 10}
+                          fontSize={12}
+                          className="font-mono font-semibold"
+                          textAnchor="middle"
+                          style={{pointerEvents: 'none'}}
+                          fill='#000'>
+                        HEAD
+                      </text>}
+
+                      { node.data.isBranchTip && <text
+                          dy={radius + 18}
+                          fontSize={12}
+                          className="font-mono"
+                          textAnchor="middle"
+                          style={{pointerEvents: 'none'}}
+                          fill='#000'>
+                        {node.data.branch}
+                      </text>}
                     </Group>
                 );
               })}

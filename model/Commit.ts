@@ -1,7 +1,5 @@
-import {Branch} from "./Branch";
-
 export class Commit {
-    branch: Branch;
+    branch: string;
     parent?: Commit;
     sha: number;
     isHead: boolean;
@@ -11,7 +9,9 @@ export class Commit {
         return [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
     }
 
-    constructor(parent: Commit | undefined) {
+    constructor(parent: Commit | undefined, branch: string = "master") {
+      this.branch = branch;
+
       if (parent) {
           this.parent = parent;
           this.sha = parent.sha + 1;
@@ -26,6 +26,10 @@ export class Commit {
 
     getFg(): string {
         return '#FFFFFF';
+    }
+
+    getBranchFg(): strint {
+      return '#000';
     }
 
     getBorder(): string {
