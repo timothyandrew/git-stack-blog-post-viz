@@ -11,21 +11,24 @@ import {Operation} from "../model/Operation";
 interface CommitGraphSvgProps {
   commits: Commit[];
   operations: Operation[];
+  widthGuide: (width: number, commits: Commit[]) => number;
 }
 
 const margin = {top: 30, left: 60, right: 60, bottom: 30};
 
 export function CommitGraphSvg(props: CommitGraphSvgProps) {
-  const [svgDimensions, setSvgDimensions] = useState<[number, number]>([0, 0]);
+  const [pageBounds, setPageBounds] = useState<[number, number]>([0, 0]);
   const svgRef = useRef(null);
 
   useEffect(() => {
     if (svgRef.current) {
       const width = svgRef.current.width.baseVal.value;
       const height = svgRef.current.height.baseVal.value;
-      setSvgDimensions([height - margin.top - margin.bottom, width - margin.left - margin.right]);
+      setPageBounds([height - margin.top - margin.bottom, width - margin.left - margin.right]);
     }
   }, [svgRef]);
+
+  const dimensions = [pageBounds[0], props.widthGuide(pageBounds[1], props.commits)];
 
   const root = hierarchy(props.commits[0], (parent) => {
     return props.commits.filter((c) => c.parent === parent);
@@ -34,7 +37,7 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
   return (
     <svg width="100%" height="200" ref={svgRef}>
       <LinearGradient id="links-gradient" from="#fd9b93" to="#fe6e9e"/>
-      <Tree root={root} size={svgDimensions}>
+      <Tree root={root} size={dimensions}>
         {tree => (
             <Group top={margin.top} left={margin.left}>
               {tree.links().map((link, i) => (

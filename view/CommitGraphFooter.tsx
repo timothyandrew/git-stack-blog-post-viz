@@ -3,8 +3,9 @@ import React from "react";
 export interface CommitGraphFooterProps {
   isPlaying: boolean;
   isDone: boolean;
-  setIsPlaying: (boolean) => void
-  reset: () => void
+  setIsPlaying: (boolean) => void;
+  reset: () => void;
+  title: string;
 }
 
 export function CommitGraphFooter(props: CommitGraphFooterProps) {
@@ -18,7 +19,7 @@ export function CommitGraphFooter(props: CommitGraphFooterProps) {
 
   return (
       <>
-        <h2 className="font-light mt-0 text-xl text-gray-800">Feature branch</h2>
+        <h2 className="font-light mt-0 text-xl text-gray-800" dangerouslySetInnerHTML={{ __html: props.title }}></h2>
         <div className="flex text-center">
           <button
               onClick={handlePlayClicked}

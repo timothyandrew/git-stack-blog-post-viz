@@ -8,6 +8,8 @@ import {CommitGraphSvg} from "./CommitGraphSvg";
 interface CommitGraphProps {
   commits: Commit[];
   operations: Operation[];
+  title: string;
+  widthGuide: (width: number, commits: Commit[]) => number;
 }
 
 const renderEveryMs = 1000;
@@ -18,6 +20,7 @@ export function CommitGraphView(props: CommitGraphProps) {
   const [isDone, setIsDone] = useState(false);
   const [lastRender, setLastRender] = useState(0);
 
+  const widthGuide = props.widthGuide ? props.widthGuide : (width: number) => width;
   const animRef = React.useRef<number>()
 
   const tick = (time: DOMHighResTimeStamp) => {
@@ -61,7 +64,7 @@ export function CommitGraphView(props: CommitGraphProps) {
       <div className="my-8">
         <div className="flex items-stretch mt-8">
           <div className="w-9/12 border border-gray-800">
-            <CommitGraphSvg commits={updatedCommits} operations={operations} />
+            <CommitGraphSvg commits={updatedCommits} operations={operations} widthGuide={widthGuide} />
           </div>
           <div className="w-3/12 border ml-4 shadow border-gray-400">
             <OperationList
@@ -70,10 +73,11 @@ export function CommitGraphView(props: CommitGraphProps) {
               isDone={isDone}/>
           </div>
         </div>
-        <div className="flex flex-row mt-2 text-center items-center justify-between w-9/12">
+        <div className="flex flex-row mt-2 text-center items-center justify-between w-9/12 pr-4">
           <CommitGraphFooter
               reset={reset}
               isDone={isDone}
+              title={props.title}
               setIsPlaying={setIsPlaying}
               isPlaying={isPlaying} />
         </div>
