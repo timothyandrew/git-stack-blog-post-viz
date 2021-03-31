@@ -37,7 +37,7 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
   });
 
   return (
-    <svg width="100%" height="200" ref={svgRef}>
+    <svg width="586" height="200" ref={svgRef}>
       <LinearGradient id="links-gradient" from="#fd9b93" to="#fe6e9e"/>
       <MarkerArrow id="arrow" stroke="#333" fill="#333" size={8} strokeWidth={2} refX={34} />
       <Tree root={root} size={dimensions}>
@@ -92,15 +92,16 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
                         HEAD
                       </text>}
 
-                      { node.data.isBranchTip && <text
-                          dy={radius + 18}
+                      { node.data.isBranchTipFor.map((s, i) => <text
+                          dy={radius + 18 + (15 * i)}
                           fontSize={12}
                           className="font-mono"
                           textAnchor="middle"
                           style={{pointerEvents: 'none'}}
                           fill='#000'>
-                        {node.data.branch}
-                      </text>}
+                          {s}
+                        </text>
+                      )}
                     </Group>
                 );
               })}

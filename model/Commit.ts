@@ -1,35 +1,33 @@
 export class Commit {
-    branch: string;
+    branches: string[];
     parent?: Commit;
     sha: number;
     isHead: boolean;
-    isBranchTip: boolean;
+    isBranchTipFor: string[];
 
     randHex(size): string {
         return [...Array(size)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
     }
 
-    constructor(parent: Commit | undefined, branch: string = "master") {
-      this.branch = branch;
+    constructor(parent: Commit | undefined, branches: string[]) {
+      this.branches = branches;
+      this.isBranchTipFor = [];
 
       if (parent) {
-          this.parent = parent;
-          this.sha = parent.sha + 1;
+        this.parent = parent;
+        this.sha = parent.sha + 1;
       } else {
-          this.sha = 1;
+        this.sha = 1;
       }
     }
 
     getBg(): string {
-        return '#FBBF24';
+      if (this.branches[0] === 'master') { return '#FBBF24' }
+      if (this.branches[0] === 'f1') { return '#F472B6' }
     }
 
     getFg(): string {
         return '#FFFFFF';
-    }
-
-    getBranchFg(): strint {
-      return '#000';
     }
 
     getBorder(): string {

@@ -37,19 +37,19 @@ export function OperationList(props: OperationListProps) {
   return (
       <>
         <h3 className="text-sm text-center font-semibold">Git Commands</h3>
-        <ul className="m-0 p-0 pt-1 mr-2">
+        <ul className="m-0 p-0 pt-1 mr-2 ml-4">
           {props.operations.map((o) => {
             return (
               <li
                   onMouseEnter={() => focusOperation(o)}
                   onMouseLeave={() => maybeUnfocusOperation(o)}
-                  className="font-mono list-none m-0 flex justify-center items-center cursor-pointer">
+                  className="font-mono list-none m-0 flex items-center cursor-pointer">
                 {
                   o.isApplied
                     ? <Check fill="#34D399" dim='16px' />
                     : <Dot fill="#EEE" dim='16px' />
                 }
-                <span className="ml-2 text-gray-700 text-sm hover:bg-gray-200 px-2">{o.command}</span>
+                <span className="text-gray-700 text-sm hover:bg-gray-200 px-1 ml-1 rounded">{o.command}</span>
               </li>
             );
           })}

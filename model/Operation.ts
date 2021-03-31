@@ -1,32 +1,56 @@
 import {Commit} from "./Commit";
+import _ from "lodash";
 
 export class Operation {
-    command: string;
-    isApplied: boolean;
+  command: string;
+  isApplied: boolean;
 
-    constructor(command: string) {
-        this.command = command;
-        this.isApplied = false;
-    }
+  constructor(command: string) {
+    this.command = command;
+    this.isApplied = false;
+  }
 
-    apply(commits: Commit[]): Commit[] { throw 'Unimplemented'; }
+  apply(commits: Commit[]): Commit[] {
+    throw 'Unimplemented';
+  }
 }
 
 export class AddCommitOperation extends Operation {
-    constructor() {
-        super("git commit");
-    }
+  branch: string;
 
-    apply(commits: Commit[]): Commit[] {
-      const parent = commits[commits.length - 1];
-      const commit = new Commit(parent);
+  constructor(branch: string) {
+    super("commit");
+    this.branch = branch;
+  }
 
-      parent.isHead = false;
-      parent.isBranchTip = false;
+  apply(oldCommits: Commit[]): Commit[] {
+    const commits = _.cloneDeep(oldCommits);
 
-      commit.isHead = true;
-      commit.isBranchTip = true;
+    const parent = commits[commits.length - 1];
+    const commit = new Commit(parent, [this.branch]);
 
-      return [...commits, commit];
-    }
+    parent.isHead = false;
+    _.remove(parent.isBranchTipFor, (b) => b === this.branch);
+
+    commit.isHead = true;
+    commit.isBranchTipFor = [this.branch];
+
+    return [...commits, commit];
+  }
+}
+
+export class CheckoutBranchOperation extends Operation {
+  branch: string;
+
+  constructor(branch: string) {
+    super(`checkout -b ${branch}`);
+    this.branch = branch;
+  }
+
+  apply(oldCommits: Commit[]): Commit[] {
+    const commits = _.cloneDeep(oldCommits);
+    const parent = commits[commits.length - 1];
+    parent.isBranchTipFor = [...parent.isBranchTipFor, this.branch];
+    return commits;
+  }
 }
