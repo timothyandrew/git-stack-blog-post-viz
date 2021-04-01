@@ -47,7 +47,7 @@ ReactDOM.render(
         new CheckoutBranchOperation("f3"),
         ...addCommits(2, "f3")
       ],
-      title: 'Fig. 3: Create the branches <code>f0</code> & <code>f2</code>, adding commits to both',
+      title: 'Fig. 3: Create two more feature branches with 2 commits each',
       layout: {
         radius: 18,
         height: 270,

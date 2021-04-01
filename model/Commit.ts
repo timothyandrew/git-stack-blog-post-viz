@@ -44,7 +44,7 @@ export class Commit {
 
     getRawSha(): string {
       if (this.parent) {
-        return this.jitter + (this.parent.getRawSha() + JSON.stringify(this.parent.branches) + (this.secondParent ? this.secondParent.sha : '0')) + JSON.stringify(this.branches);
+        return this.jitter + (this.parent.getRawSha() + JSON.stringify(this.parent.branches) + (this.secondParent ? this.secondParent.getRawSha() : '0')) + JSON.stringify(this.branches);
       } else {
         return '1';
       }

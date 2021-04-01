@@ -50,6 +50,14 @@ export function CommitGraphView(props: CommitGraphProps) {
     setIsDone(false);
   };
 
+  const jumpToEnd = () => {
+    let localOperations = [...operations];
+    localOperations.forEach((o) => o.isApplied = true);
+    setOperations(localOperations);
+    setIsPlaying(false);
+    setIsDone(true);
+  };
+
   useLayoutEffect(() => {
     animRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animRef.current);
@@ -72,12 +80,13 @@ export function CommitGraphView(props: CommitGraphProps) {
               isDone={isDone}/>
           </div>
         </div>
-        <div className="flex flex-row mt-2 text-center items-center justify-between w-9/12 pr-4">
+        <div className="flex flex-row mt-2 text-center items-center justify-between w-9/12 pr-2">
           <CommitGraphFooter
               reset={reset}
               isDone={isDone}
               title={props.title}
               setIsPlaying={setIsPlaying}
+              jumpToEnd={jumpToEnd}
               isPlaying={isPlaying} />
         </div>
       </div>
