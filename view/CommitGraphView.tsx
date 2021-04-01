@@ -3,13 +3,13 @@ import {CommitGraphFooter} from "./CommitGraphFooter";
 import {OperationList} from "./OperationList";
 import {Commit} from "../model/Commit";
 import {Operation} from "../model/Operation";
-import {CommitGraphSvg} from "./CommitGraphSvg";
+import {CommitGraphSvg, SvgLayoutProps} from "./CommitGraphSvg";
 
 interface CommitGraphProps {
   commits: Commit[];
   operations: Operation[];
   title: string;
-  widthGuide: (width: number, commits: Commit[]) => number;
+  layout: SvgLayoutProps;
 }
 
 const renderEveryMs = 1000;
@@ -20,7 +20,6 @@ export function CommitGraphView(props: CommitGraphProps) {
   const [isDone, setIsDone] = useState(false);
   const [lastRender, setLastRender] = useState(0);
 
-  const widthGuide = props.widthGuide ? props.widthGuide : (width: number) => width;
   const animRef = React.useRef<number>()
 
   const tick = (time: DOMHighResTimeStamp) => {
@@ -61,12 +60,12 @@ export function CommitGraphView(props: CommitGraphProps) {
       .reduce((commits, o) => o.apply(commits), props.commits);
 
   return (
-      <div className="my-8">
-        <div className="flex items-stretch mt-8">
+      <div>
+        <div className="flex items-stretch">
           <div className="w-9/12 border border-gray-800">
-            <CommitGraphSvg commits={updatedCommits} operations={operations} widthGuide={widthGuide} />
+            <CommitGraphSvg commits={updatedCommits} operations={operations} layout={props.layout} />
           </div>
-          <div className="w-3/12 border ml-4 shadow border-gray-400">
+          <div className="w-3/12 border ml-2 shadow border-gray-400">
             <OperationList
               operations={operations}
               setOperations={setOperations}
