@@ -5,7 +5,7 @@ import {CommitGraphView} from "./view/CommitGraphView";
 import {addCommits, chain, chains, extendBranch} from "./factory";
 import {
   AddCommitOperation,
-  CheckoutBranchOperation,
+  CheckoutBranchOperation, CherryPickSequenceOperation, ForceCheckoutBranchOperation,
   JumpToBranchOperation,
   MergeBranchOperation,
   PushBranchOperation, RebaseBranchOperation
@@ -194,4 +194,35 @@ ReactDOM.render(
       }
     }),
     document.querySelector('#rebase-conflict')
+);
+
+ReactDOM.render(
+    React.createElement(CommitGraphView, {
+      commits: _.flow([
+        (chain) => chains(chain),
+        (chain) => extendBranch(chain, "f1", 1),
+        (chain) => extendBranch(chain, "f2", 1)
+      ])([
+        [2, ["master", "origin/master"]],
+        [2, ["f1", "origin/f1"]],
+        [2, ["f2", "origin/f2"]],
+        [2, ["f3", "origin/f3"]]
+      ]),
+      operations: [
+        new JumpToBranchOperation("master", true),
+        new CherryPickSequenceOperation("f1", "master", 3, "origin/master"),
+        new ForceCheckoutBranchOperation("f1"),
+        new CherryPickSequenceOperation("f2", "f1", 3, "origin/f1"),
+        new ForceCheckoutBranchOperation("f2"),
+        new CherryPickSequenceOperation("f3", "f2", 2, "origin/f2"),
+        new ForceCheckoutBranchOperation("f3"),
+      ],
+      title: 'Fig. 8: Cherry-pick each feature branch',
+      layout: {
+        radius: 15,
+        height: 400,
+        widthGuide: (width, commits) => width
+      }
+    }),
+    document.querySelector('#cherry-pick-workflow')
 );

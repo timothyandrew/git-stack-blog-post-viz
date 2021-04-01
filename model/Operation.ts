@@ -63,11 +63,42 @@ export class CheckoutBranchOperation extends Operation {
   }
 }
 
-export class JumpToBranchOperation extends Operation {
+export class ForceCheckoutBranchOperation extends Operation {
   branch: string;
 
   constructor(branch: string) {
-    super(`checkout ${branch}`);
+    super(`branch --force ${branch}`);
+    this.branch = branch;
+  }
+
+  apply(oldCommits: Commit[]): Commit[] {
+    const commits = cloneCommits(oldCommits);
+
+    let old: Commit;
+    let head: Commit;
+
+    commits.forEach(c => {
+      if(c.isBranchTipFor.includes(this.branch)) { old = c }
+      if(c.isHead) { head = c }
+    });
+
+    _.remove(old.isBranchTipFor, (b) => b === this.branch);
+    head.isBranchTipFor.push(this.branch);
+
+    return commits;
+  }
+}
+
+export class JumpToBranchOperation extends Operation {
+  branch: string;
+
+  constructor(branch: string, detach: boolean = false) {
+    if (detach) {
+      super(`checkout --detach ${branch}`);
+    } else {
+      super(`checkout ${branch}`);
+    }
+
     this.branch = branch;
   }
 
@@ -178,6 +209,38 @@ export class RebaseBranchOperation extends Operation {
     branchCommit.isHead = false;
     _.remove(branchCommit.isBranchTipFor, (b) => b === this.branch);
 
+    return [...clonedCommits, ...rebasedCommits];
+  }
+}
+
+export class CherryPickSequenceOperation extends Operation {
+  branch: string;
+  onto: string;
+  count: number;
+  boundary: string;
+
+  constructor(branch: string, onto: string, count: number, boundary: string) {
+    super(`cherry-pick ${boundary}..${branch}`);
+    this.boundary = boundary;
+    this.branch = branch;
+    this.onto = onto;
+    this.count = count;
+  }
+
+  apply(oldCommits: Commit[]): Commit[] {
+    const clonedCommits = cloneCommits(oldCommits);
+
+    let ontoCommit;
+    let branchCommit;
+
+    const commit = clonedCommits.forEach(c => {
+      if (c.isBranchTipFor.includes(this.onto)) { ontoCommit = c }
+      if (c.isBranchTipFor.includes(this.branch)) { branchCommit = c }
+    });
+
+    ontoCommit.isHead = false;
+
+    const rebasedCommits = chain(this.count, [this.branch], ontoCommit, true, false);
     return [...clonedCommits, ...rebasedCommits];
   }
 }

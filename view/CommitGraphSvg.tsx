@@ -63,16 +63,16 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
   }
 
   const arrowRefX = (): number => {
-    if (radius == 15) { return 27 }
-    if (radius == 18) { return 29 }
-    if (radius == 23) { return 35 }
+    if (radius == 15) { return 24 }
+    if (radius == 18) { return 27 }
+    if (radius == 23) { return 32 }
     return 23;
   };
 
   return (
     <svg width="586" height={height} ref={svgRef}>
       <LinearGradient id="links-gradient" from="#fd9b93" to="#fe6e9e"/>
-      <MarkerArrow id={`arrow-${arrowRefX()}`} stroke="#333" fill="#333" size={8} strokeWidth={2} refX={arrowRefX()} />
+      <MarkerArrow id={`arrow-${arrowRefX()}`} stroke="#333" fill="#333" size={5} strokeWidth={2} refX={arrowRefX()} />
       <Tree root={root} size={dimensions}>
         {tree => (
             <Group top={margin.top} left={margin.left}>
@@ -167,7 +167,7 @@ export function CommitGraphSvg(props: CommitGraphSvgProps) {
                               fill="rgba(0,0,0,0)"
                               stroke="#B91C1C"
                               strokeWidth={3}
-                              rx={1}
+                              rx={2}
                           />
                         </>
                       }

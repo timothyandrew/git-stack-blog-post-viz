@@ -5,14 +5,17 @@ import _ from "lodash";
 export const chain = (n: number,
                       branches: string[],
                       initialParent: Commit | undefined = undefined,
-                      markHead: boolean = true): Commit[] => {
+                      markHead: boolean = true,
+                      markBranchTip: boolean = true): Commit[] => {
   let commits = [new Commit(initialParent, branches)];
 
   for (let i = 1; i < n; i++) {
       commits[i] = new Commit(commits[i - 1], branches);
   }
 
-  commits[n-1].isBranchTipFor = _.clone(branches);
+  if (markBranchTip) {
+    commits[n-1].isBranchTipFor = _.clone(branches);
+  }
 
   if (markHead) {
     commits[n-1].isHead = true;
