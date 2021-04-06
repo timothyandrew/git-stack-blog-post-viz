@@ -21,7 +21,7 @@ interface CommitGraphSvgProps {
   layout: SvgLayoutProps;
 }
 
-const margin = {top: 10, left: 30, right: 50, bottom: 10};
+const margin = {top: 10, left: 50, right: 50, bottom: 10};
 
 export function CommitGraphSvg(props: CommitGraphSvgProps) {
   const [pageBounds, setPageBounds] = useState<[number, number]>([0, 0]);
