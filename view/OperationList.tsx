@@ -35,9 +35,9 @@ export function OperationList(props: OperationListProps) {
   };
 
   return (
-      <>
-        <h3 className="text-sm text-center font-semibold">Git Commands</h3>
-        <ul className="m-0 p-0 pt-1 mr-1 ml-4">
+      <div className="flex flex-row lg:flex-col items-center justify-between lg:items-start">
+        <h3 className="text-xl font-medium lg:text-base text-center ml-3 my-0 lg:m-0 text-center">Git Operation List</h3>
+        <ul className="m-0 p-0 pt-1 ml-8 mr-4 my-0 lg:m-0">
           {props.operations.map((o) => {
             return (
               <li
@@ -51,11 +51,11 @@ export function OperationList(props: OperationListProps) {
                       : <Dot fill="#EEE" dim='16px' />
                   }
                 </div>
-                <span className="py-0 text-gray-901 text-xs font-medium bg-gray-100 hover:bg-gray-300 px-1 ml-1 mr-2 mt-1 rounded">{o.command}</span>
+                <span className="py-0 text-gray-901 text-xs font-medium bg-gray-100 hover:bg-gray-300 px-1 ml-1 mr-2 rounded">{o.command}</span>
               </li>
             );
           })}
         </ul>
-      </>
+      </div>
   );
 }

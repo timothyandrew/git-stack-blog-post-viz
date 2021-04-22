@@ -20,7 +20,7 @@ export function CommitGraphFooter(props: CommitGraphFooterProps) {
 
   return (
       <>
-        <h2 className="font-medium mt-0 text-gray-700 text-sm ml-0" dangerouslySetInnerHTML={{ __html: props.title }}></h2>
+        <h2 className="font-medium mt-0 text-gray-700 text-sm ml-0 truncate" dangerouslySetInnerHTML={{ __html: props.title }}></h2>
         <div className="flex text-center">
           <button
               onClick={handlePlayClicked}
