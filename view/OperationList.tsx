@@ -1,5 +1,5 @@
 import {Operation} from "../model/Operation";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Check, Dot} from "./SvgIcons";
 import _ from "lodash";
 
@@ -10,6 +10,16 @@ export interface OperationListProps {
 }
 
 export function OperationList(props: OperationListProps) {
+  const [darkMode, setDarkMode] = useState(window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches : false);
+
+  useEffect(() => {
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        setDarkMode(e.matches);
+      });
+    }
+  }, []);
+
   const focusOperation = (focus: Operation) => {
     let operations = [...props.operations];
     let splitIndex = operations.indexOf(focus) + 1;
@@ -35,9 +45,9 @@ export function OperationList(props: OperationListProps) {
   };
 
   return (
-      <div className="flex flex-row lg:flex-col items-center justify-between lg:items-start">
-        <h3 className="text-xl font-medium lg:text-base text-center ml-3 my-0 lg:m-0 text-center">Git Operation List</h3>
-        <ul className="m-0 p-0 pt-1 ml-8 mr-4 my-0 lg:m-0">
+      <div className="flex flex-row lg:flex-col items-center justify-start lg:items-start">
+        <h3 className="text-lg font-medium lg:text-base flex-1 lg:flex-none text-center mr-2 sm:mr-4 my-0 lg:m-0">Git Operation List</h3>
+        <ul className="m-0 p-0 pt-1 mr-3 sm:mr-4">
           {props.operations.map((o) => {
             return (
               <li
@@ -48,10 +58,10 @@ export function OperationList(props: OperationListProps) {
                   {
                     o.isApplied
                       ? <Check fill="#34D399" dim='16px' />
-                      : <Dot fill="#EEE" dim='16px' />
+                      : <Dot fill={darkMode ? "#222" : "#EEE"} dim='16px' />
                   }
                 </div>
-                <span className="py-0 text-gray-901 text-xs font-medium bg-gray-100 hover:bg-gray-300 px-1 ml-1 mr-2 rounded">{o.command}</span>
+                <span className="py-0 text-gray-900 dark:text-gray-300 text-xs font-medium bg-gray-100 dark:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-800 px-1 ml-1 rounded">{o.command}</span>
               </li>
             );
           })}

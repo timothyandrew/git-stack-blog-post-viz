@@ -59,12 +59,4 @@ export class Commit {
       if (this.branches[0] === 'origin/f1') { return '#059669' }
       if (this.branches[0] === 'origin/f2') { return '#EC4899' }
     }
-
-    getFg(): string {
-        return '#FFFFFF';
-    }
-
-    getBorder(): string {
-        return '#000';
-    }
 }

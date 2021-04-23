@@ -71,20 +71,18 @@ export function CommitGraphView(props: CommitGraphProps) {
       <div>
         <div className="flex flex-col lg:flex-row items-start lg:items-start my-16">
           <div className="flex flex-col items-stretch w-full">
-            <div className="border border-gray-800 w-full">
+            <div className="border border-gray-800 dark:border-gray-700 w-full rounded-sm">
               <CommitGraphSvg commits={updatedCommits} operations={operations} layout={props.layout} />
             </div>
-            <div className="flex flex-row mt-2 text-center items-center justify-between">
-              <CommitGraphFooter
-                  reset={reset}
-                  isDone={isDone}
-                  title={props.title}
-                  setIsPlaying={setIsPlaying}
-                  jumpToEnd={jumpToEnd}
-                  isPlaying={isPlaying} />
-            </div>
+            <CommitGraphFooter
+                reset={reset}
+                isDone={isDone}
+                title={props.title}
+                setIsPlaying={setIsPlaying}
+                jumpToEnd={jumpToEnd}
+                isPlaying={isPlaying} />
           </div>
-          <div className="border py-4 lg:w-4/12 pl-4 mt-4 lg:mt-0 lg:ml-2 shadow border-gray-400">
+          <div className="border py-4 lg:w-4/12 pl-4 mt-4 lg:mt-0 lg:ml-2 shadow border-gray-400 dark:border-gray-800 rounded-sm">
             <OperationList
               operations={operations}
               setOperations={setOperations}

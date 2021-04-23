@@ -97,7 +97,7 @@ ReactDOM.render(
         new JumpToBranchOperation("origin/master"),
         new MergeBranchOperation("origin/f1", "origin/master"),
       ],
-      title: 'Fig. 4: Push each feature branch up to Github',
+      title: 'Fig. 5: Push each feature branch up to Github',
       layout: {
         radius: 18,
         height: 400,
@@ -126,7 +126,7 @@ ReactDOM.render(
         new AddCommitOperation("f3"),
         new PushBranchOperation("f3", "origin"),
       ],
-      title: 'Fig. 5: Add commits to each feature branch (code review)',
+      title: 'Fig. 6: Add commits to each feature branch (code review)',
       layout: {
         radius: 18,
         height: 400,
@@ -156,7 +156,7 @@ ReactDOM.render(
         new RebaseBranchOperation("f3", "f2", 2),
         new PushBranchOperation("f3", "origin", true),
       ],
-      title: 'Fig. 6: Rebase stack to incorporate new commits',
+      title: 'Fig. 7: Rebase stack to incorporate new commits',
       layout: {
         radius: 18,
         height: 400,
@@ -186,7 +186,7 @@ ReactDOM.render(
         new RebaseBranchOperation("f3", "f2", 4),
         new PushBranchOperation("f3", "origin", true),
       ],
-      title: 'Fig. 7: Rebase stack with conflicts',
+      title: 'Fig. 8: Rebase stack with conflicts',
       layout: {
         radius: 15,
         height: 400,
@@ -217,7 +217,7 @@ ReactDOM.render(
         new CherryPickSequenceOperation("f3", "f2", 2, "origin/f2"),
         new ForceCheckoutBranchOperation("f3"),
       ],
-      title: 'Fig. 8: Cherry-pick each feature branch',
+      title: 'Fig. 9: Cherry-pick each feature branch',
       layout: {
         radius: 15,
         height: 400,
